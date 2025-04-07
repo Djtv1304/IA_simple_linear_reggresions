@@ -1,49 +1,54 @@
 # Regresión Lineal Simple
 
-#Explicaciones clave:
-#Importación de datos: Se asume que el archivo Salary_Data.csv contiene dos columnas: años de experiencia y salario.
-#División del dataset: Usamos train_test_split para dividir los datos en un conjunto de entrenamiento (2/3) y prueba (1/3).
-#Entrenamiento del modelo: Utilizamos LinearRegression de sklearn para ajustar un modelo lineal a los datos de entrenamiento.
-#Visualización de resultados:
-#Gráfico para el conjunto de entrenamiento: muestra los puntos reales y la línea de regresión ajustada.
-#Gráfico para el conjunto de prueba: muestra los puntos reales del conjunto de prueba y la misma línea ajustada con el conjunto de entrenamiento.
+# Explicaciones clave:
+# - En este ejemplo, usamos la columna '2000' como variable independiente (X)
+#   y la columna '2020' como variable dependiente (y).
+# - Se asume que en tu CSV (internet_usage.csv) las columnas de los años (2000, 2020, etc.)
+#   contienen datos numéricos sobre el uso de internet para cada país.
+# - Ajusta los nombres de las columnas según tu CSV real.
 
-# Importar las bibliotecas necesarias
-import numpy as np  # Para operaciones matemáticas y manejo de matrices
-import matplotlib.pyplot as plt  # Para visualización de datos
-import pandas as pd  # Para manipulación y análisis de datos
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
 
-# Importar el dataset
-# Asegúrate de que 'Salary_Data.csv' esté en el mismo directorio o proporciona la ruta completa.
+# 1. Importar el dataset
 dataset = pd.read_csv('internet_usage.csv')
-X = dataset.iloc[:, :-1].values  # Variable independiente (años de experiencia)
-y = dataset.iloc[:, -1].values  # Variable dependiente (salario)
 
-# Dividir el dataset en conjunto de entrenamiento y conjunto de prueba
+# 2. Seleccionar la(s) columna(s) independiente(s) y dependiente
+#    Suponemos que la columna '2000' existe y es numérica, y queremos predecir la columna '2020'.
+X = dataset[['2000']].values   # Variable independiente
+y = dataset['2020'].values     # Variable dependiente
+
+# 3. Dividir el dataset en conjunto de entrenamiento y de prueba
 from sklearn.model_selection import train_test_split
-# Usamos 2/3 para entrenamiento y 1/3 para prueba
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=1/3, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, 
+    y, 
+    test_size=1/3, 
+    random_state=0
+)
 
-# Entrenar el modelo de Regresión Lineal Simple con el conjunto de entrenamiento
+# 4. Entrenar el modelo de Regresión Lineal Simple
 from sklearn.linear_model import LinearRegression
-regressor = LinearRegression()  # Crear el modelo de regresión lineal
-regressor.fit(X_train, y_train)  # Ajustar el modelo a los datos de entrenamiento
+regressor = LinearRegression()
+regressor.fit(X_train, y_train)
 
-# Predecir los resultados del conjunto de prueba
-y_pred = regressor.predict(X_test)  # Generar predicciones para los datos de prueba
+# 5. Predecir los resultados para el conjunto de prueba
+y_pred = regressor.predict(X_test)
 
-# Visualizar los resultados del conjunto de entrenamiento
-plt.scatter(X_train, y_train, color='red')  # Puntos reales en el conjunto de entrenamiento
-plt.plot(X_train, regressor.predict(X_train), color='blue')  # Línea de regresión ajustada
-plt.title('Salario vs Experiencia (Conjunto de Entrenamiento)')  # Título del gráfico
-plt.xlabel('Años de Experiencia')  # Etiqueta del eje X
-plt.ylabel('Salario')  # Etiqueta del eje Y
-plt.show()  # Mostrar el gráfico
+# 6. Visualizar los resultados en el conjunto de entrenamiento
+plt.scatter(X_train, y_train, color='red')  
+plt.plot(X_train, regressor.predict(X_train), color='blue')
+plt.title('Uso de Internet (2020) vs (2000) [Entrenamiento]')
+plt.xlabel('Uso de Internet en 2000')
+plt.ylabel('Uso de Internet en 2020')
+plt.show()
 
-# Visualizar los resultados del conjunto de prueba
-plt.scatter(X_test, y_test, color='red')  # Puntos reales en el conjunto de prueba
-plt.plot(X_train, regressor.predict(X_train), color='blue')  # Línea de regresión ajustada (misma que en entrenamiento)
-plt.title('Salario vs Experiencia (Conjunto de Prueba)')  # Título del gráfico
-plt.xlabel('Años de Experiencia')  # Etiqueta del eje X
-plt.ylabel('Salario')  # Etiqueta del eje Y
-plt.show()  # Mostrar el gráfico
+# 7. Visualizar los resultados en el conjunto de prueba
+plt.scatter(X_test, y_test, color='red')
+plt.plot(X_train, regressor.predict(X_train), color='blue')
+plt.title('Uso de Internet (2020) vs (2000) [Prueba]')
+plt.xlabel('Uso de Internet en 2000')
+plt.ylabel('Uso de Internet en 2020')
+plt.show()
+
